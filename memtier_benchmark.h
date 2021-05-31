@@ -115,8 +115,8 @@ extern void benchmark_log(int level, const char *fmt, ...);
 #ifdef KEY_LIST
 #define MAX_LIST_CAP 1000
 #define MAX_KEY_LENGTH 10
-char *key_list[MAX_LIST_CAP];
-int key_len_list[MAX_LIST_CAP];
+extern char *key_list[MAX_LIST_CAP];
+extern int key_len_list[MAX_LIST_CAP];
 #endif
 
 #endif /* _MEMTIER_BENCHMARK_H */

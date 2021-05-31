@@ -46,6 +46,10 @@
 #include "obj_gen.h"
 #include "memtier_benchmark.h"
 
+#ifdef KEY_LIST
+char *key_list[MAX_LIST_CAP];
+int key_len_list[MAX_LIST_CAP];
+#endif
 
 static int log_level = 0;
 void benchmark_log_file_line(int level, const char *filename, unsigned int line, const char *fmt, ...)
@@ -1242,7 +1246,7 @@ void fill_key_list() {
     }
     for (int i = line_num; i < MAX_LIST_CAP; i++) {
         key_len_list[i] = 0;
-        key_list = NULL;
+        key_list[i] = NULL;
     }
 }
 #endif
@@ -1629,7 +1633,7 @@ int main(int argc, char *argv[])
 
 #ifdef KEY_LIST
     for (int i = 0; i < MAX_LIST_CAP; i++) {
-        if (keylist[i]) free(keylist[i]);
+        if (key_list[i]) free(key_list[i]);
     }
 #endif
 
