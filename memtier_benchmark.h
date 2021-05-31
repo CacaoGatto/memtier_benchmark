@@ -110,4 +110,13 @@ struct benchmark_config {
 extern void benchmark_log_file_line(int level, const char *filename, unsigned int line, const char *fmt, ...);
 extern void benchmark_log(int level, const char *fmt, ...);
 
+#define KEY_LIST
+
+#ifdef KEY_LIST
+#define MAX_LIST_CAP 1000
+#define MAX_KEY_LENGTH 10
+char *key_list[MAX_LIST_CAP];
+int key_len_list[MAX_LIST_CAP];
+#endif
+
 #endif /* _MEMTIER_BENCHMARK_H */

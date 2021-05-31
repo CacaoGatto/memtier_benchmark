@@ -251,9 +251,14 @@ void client::create_arbitrary_request(const arbitrary_command* cmd, struct timev
         if (arg->type == const_type) {
             cmd_size += m_connections[conn_id]->send_arbitrary_command(arg);
         } else if (arg->type == key_type) {
+#ifdef KEY_LIST
+            unsigned int key_len = key_len_list[m_executed_command_index];
+            const char *key = key_list[m_executed_command_index];
+#else
             int iter = get_arbitrary_obj_iter_type(cmd, m_executed_command_index);
             unsigned int key_len;
             const char *key = m_obj_gen->get_key(iter, &key_len);
+#endif
 
             assert(key != NULL);
             assert(key_len > 0);

@@ -1226,8 +1226,34 @@ static void cleanup_openssl(void)
 
 #endif
 
+#ifdef KEY_LIST
+void fill_key_list() {
+    FILE *fp = fopen("key_list.csv", "r");
+    assert(fp);
+    int line_num = 0;
+    char buffer[MAX_KEY_LENGTH];
+    while (fgets(buffer, MAX_KEY_LENGTH, fp) && (line_num < MAX_LIST_CAP)) {
+        int len = strlen(buffer);
+        char *key = (char *)malloc(len);
+        memcpy(key, buffer, len);
+        key_len_list[line_num] = len;
+        key_list[line_num] = key;
+        line_num++;
+    }
+    for (int i = line_num; i < MAX_LIST_CAP; i++) {
+        key_len_list[i] = 0;
+        key_list = NULL;
+    }
+}
+#endif
+
 int main(int argc, char *argv[])
 {
+
+#ifdef KEY_LIST
+    fill_key_list();
+#endif
+
     benchmark_config cfg = benchmark_config();
     cfg.arbitrary_commands = new arbitrary_command_list();
 
@@ -1600,6 +1626,12 @@ int main(int argc, char *argv[])
     if (cfg.arbitrary_commands != NULL) {
         delete cfg.arbitrary_commands;
     }
+
+#ifdef KEY_LIST
+    for (int i = 0; i < MAX_LIST_CAP; i++) {
+        if (keylist[i]) free(keylist[i]);
+    }
+#endif
 
 #ifdef USE_TLS
     if(cfg.tls) {
